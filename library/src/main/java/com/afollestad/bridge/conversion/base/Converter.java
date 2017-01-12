@@ -5,6 +5,8 @@ import android.support.annotation.NonNull;
 
 import com.afollestad.bridge.annotations.Header;
 
+import org.json.JSONObject;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Field;
@@ -34,12 +36,13 @@ class Converter {
         return fields;
     }
 
-    @IntDef({FIELD_OTHER, FIELD_SHORT, FIELD_INTEGER, FIELD_LONG,
+    @IntDef({FIELD_JSON, FIELD_OTHER, FIELD_SHORT, FIELD_INTEGER, FIELD_LONG,
             FIELD_FLOAT, FIELD_DOUBLE, FIELD_BOOLEAN, FIELD_STRING})
     @Retention(RetentionPolicy.SOURCE)
     public @interface FieldType {
     }
 
+    public static final int FIELD_JSON = -2;
     public static final int FIELD_OTHER = -1;
     public static final int FIELD_SHORT = 1;
     public static final int FIELD_INTEGER = 2;
@@ -65,6 +68,8 @@ class Converter {
             return FIELD_BOOLEAN;
         else if (cls == String.class)
             return FIELD_STRING;
+        else if (cls == JSONObject.class)
+            return FIELD_JSON;
         return FIELD_OTHER;
     }
 

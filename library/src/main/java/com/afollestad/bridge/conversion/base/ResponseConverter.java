@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import com.afollestad.bridge.BridgeUtil;
 import com.afollestad.bridge.Response;
 import com.afollestad.bridge.annotations.Header;
+import com.afollestad.bridge.annotations.JSON;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
@@ -94,6 +95,17 @@ public abstract class ResponseConverter extends Converter {
             }
             @FieldType
             final int fieldType = getFieldType(field.getType());
+
+            JSON jsonAnnotation = field.getAnnotation(JSON.class);
+            if (jsonAnnotation != null) {
+                try {
+                    field.set(object, getValueFromResponse("", fieldType, null));
+                } catch (Throwable t) {
+                    throw new RuntimeException(String.format("Failed to set the value of field %s of class %s: %s",
+                            field.getName(), targetCls.getName(), t.getMessage()), t);
+                }
+                continue;
+            }
 
             Header headerAnnotation = field.getAnnotation(Header.class);
             if (headerAnnotation != null) {
@@ -294,7 +306,7 @@ public abstract class ResponseConverter extends Converter {
     public abstract String getFieldInputName(@NonNull Field field) throws Exception;
 
     @Nullable
-    public abstract Object getValueFromResponse(@NonNull String name, @FieldType int fieldType, @NonNull Class<?> cls) throws Exception;
+    public abstract Object getValueFromResponse(@NonNull String name, @FieldType int fieldType, @Nullable Class<?> cls) throws Exception;
 
     @Nullable
     public abstract Object getValueFromResponse(@NonNull String[] nameParts, @FieldType int fieldType, @NonNull Class<?> cls) throws Exception;

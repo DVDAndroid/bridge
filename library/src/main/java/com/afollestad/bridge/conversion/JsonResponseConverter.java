@@ -14,6 +14,7 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Field;
 
+
 /**
  * @author Aidan Follestad (afollestad)
  */
@@ -42,7 +43,18 @@ public class JsonResponseConverter extends ResponseConverter {
     @SuppressLint("SwitchIntDef")
     @Nullable
     @Override
-    public Object getValueFromResponse(@NonNull String name, @FieldType int fieldType, @NonNull Class<?> cls) throws Exception {
+    public Object getValueFromResponse(@NonNull String name, @FieldType int fieldType, @Nullable Class<?> cls) throws Exception {
+        if (name.isEmpty() || cls == null) {
+            switch (fieldType) {
+                case FIELD_STRING:
+                    return mCurrentObject.toString();
+                case FIELD_JSON:
+                    return mCurrentObject;
+                default:
+                    return null;
+            }
+        }
+
         if (mCurrentObject.isNull(name)) return null;
         switch (fieldType) {
             case FIELD_SHORT:
