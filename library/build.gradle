@@ -4,8 +4,8 @@ ext {
     PUBLISH_GROUP_ID = 'com.afollestad'
     PUBLISH_ARTIFACT_ID = 'bridge'
     PUBLISH_VERSION = '4.0.0'
-    BUILD_TOOLS = "24.0.3"
-    GOOGLE_LIBS = "25.0.0"
+    BUILD_TOOLS = "25.0.2"
+    GOOGLE_LIBS = "25.1.0"
     TARGET_SDK = 25
 }
 
