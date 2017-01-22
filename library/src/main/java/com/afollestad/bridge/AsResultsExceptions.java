@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * A version of {@link AsResults} that throws exceptions for all methods. Used in {@link RequestBuilder}.
@@ -65,6 +66,10 @@ interface AsResultsExceptions {
 
     <T> void asClassArray(@NonNull Class<T> cls, @NonNull ResponseConvertCallback<T[]> callback);
 
+    @Nullable
+    <T> List<T> asClassList(@NonNull Class<T> cls) throws BridgeException;
+
+    <T> void asClassList(@NonNull Class<T> cls, @NonNull ResponseConvertCallback<List<T>> callback);
 
     @Nullable
     Object asSuggested() throws BridgeException;

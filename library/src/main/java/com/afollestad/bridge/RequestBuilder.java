@@ -446,6 +446,33 @@ public final class RequestBuilder implements AsResultsExceptions, Serializable {
         });
     }
 
+    @Nullable
+    @Override
+    public <T> List<T> asClassList(@NonNull Class<T> cls) throws BridgeException {
+        throwIfNotSuccess();
+        Response response = response();
+        if (response == null) return null;
+        return response.asClassList(cls);
+    }
+
+    @Override
+    public <T> void asClassList(final @NonNull Class<T> cls, final @NonNull ResponseConvertCallback<List<T>> callback) {
+        request(new Callback() {
+            @Override
+            public void response(Request request, Response response, BridgeException e) {
+                if (e != null) {
+                    callback.onResponse(response, null, e);
+                } else {
+                    try {
+                        callback.onResponse(response, response.asClassList(cls), null);
+                    } catch (BridgeException e1) {
+                        callback.onResponse(response, null, e1);
+                    }
+                }
+            }
+        });
+    }
+
     @WorkerThread
     public void asFile(@NonNull File destination) throws BridgeException {
         throwIfNotSuccess();

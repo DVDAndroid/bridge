@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * @author Aidan Follestad (afollestad)
@@ -40,6 +41,9 @@ interface AsResults {
 
     @Nullable
     <T> T[] asClassArray(@NonNull Class<T> cls) throws BridgeException;
+
+    @Nullable
+    <T> List<T> asClassList(@NonNull Class<T> cls) throws BridgeException;
 
     @Nullable
     Object asSuggested() throws BridgeException;

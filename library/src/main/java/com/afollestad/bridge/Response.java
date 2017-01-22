@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -225,6 +226,13 @@ public final class Response implements AsResults, Serializable {
         Log.d(this, "Response conversion to array of class %s took %d milliseconds (%d seconds).",
                 cls.getName(), diff, diff / 1000);
         return result;
+    }
+
+    @Nullable
+    @Override
+    public <T> List<T> asClassList(@NonNull Class<T> cls) throws BridgeException {
+        T[] array = asClassArray(cls);
+        return array == null ? null : Arrays.asList(array);
     }
 
     @Nullable
