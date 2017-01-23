@@ -106,6 +106,10 @@ public class Bridge implements Serializable {
         } else return url;
     }
 
+    public static RequestBuilder parseJson(@NonNull String json) {
+        return new RequestBuilder(json, Method.JSON, client());
+    }
+
     public static RequestBuilder get(@NonNull String url, @Nullable Object... formatArgs) {
         return new RequestBuilder(processUrl(url, formatArgs), Method.GET, client());
     }

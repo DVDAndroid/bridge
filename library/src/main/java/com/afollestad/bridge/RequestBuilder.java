@@ -52,7 +52,7 @@ public final class RequestBuilder implements AsResultsExceptions, Serializable {
     protected RequestBuilder(String url, @Request.MethodInt int method, Bridge context) {
         mContext = context;
         final Config cf = Bridge.config();
-        if (!url.startsWith("http") && cf.mHost != null)
+        if (method != Method.JSON && !url.startsWith("http") && cf.mHost != null)
             url = cf.mHost + url;
 
         Log.d(this, "%s %s", Method.name(method), url);

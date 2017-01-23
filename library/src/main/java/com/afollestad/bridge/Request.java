@@ -17,6 +17,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -25,7 +26,7 @@ import java.util.List;
  */
 public final class Request implements Serializable {
 
-    @IntDef({Method.UNSPECIFIED, Method.GET, Method.POST, Method.PUT, Method.DELETE})
+    @IntDef({Method.UNSPECIFIED, Method.GET, Method.POST, Method.PUT, Method.DELETE, Method.JSON})
     @Retention(RetentionPolicy.SOURCE)
     public @interface MethodInt {
     }
@@ -60,6 +61,19 @@ public final class Request implements Serializable {
 
     @WorkerThread
     protected Request makeRequest() throws BridgeException {
+        if (mBuilder.mMethod == Method.JSON){
+            try {
+                mResponse = new Response(mBuilder.mUrl.getBytes(), url(), 200, mBuilder.mUrl, new HashMap<String, List<String>>() {{
+                    put("Content-Type", new ArrayList<String>() {{
+                        add("application/json");
+                    }});
+                }}, false);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return this;
+        }
+
         try {
             URL url = new URL(mBuilder.mUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();

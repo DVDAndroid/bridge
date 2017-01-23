@@ -10,6 +10,7 @@ public final class Method {
     public final static int PUT = 2;
     public final static int POST = 3;
     public final static int DELETE = 4;
+    public static final int JSON = 5;
 
     public static String name(int methodValue) {
         switch (methodValue) {
@@ -21,6 +22,8 @@ public final class Method {
                 return "POST";
             case 4:
                 return "DELETE";
+            case 5:
+                return "JSON";
         }
     }
 }
